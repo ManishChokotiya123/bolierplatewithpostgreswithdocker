@@ -1,0 +1,28 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: new_password
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+    ports:
+      - "5434:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: manish.c@webllisto.com
+      PGADMIN_DEFAULT_PASSWORD: Manish@12345
+      PGADMIN_SETUP_EMAIL: disable
+      PGADMIN_DISABLE_POSTFIX: 1
+    ports:
+      - "5050:80"
+
+  app:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
