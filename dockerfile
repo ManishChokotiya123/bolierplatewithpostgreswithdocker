@@ -9,5 +9,4 @@ COPY package*.json ./
 RUN npm install
 RUN npx tsc
 
-# CMD ["node", "src/index.ts"]  // Replace this line with the following
 CMD ["npx", "ts-node", "src/index.ts"]
