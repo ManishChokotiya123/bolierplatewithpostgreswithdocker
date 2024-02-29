@@ -44,12 +44,12 @@ export const findbyId = async (req: Request, res: Response) => {
       id,
     ]);
     if (result.rows.length === 0) {
-      res.status(404).send("User does not exist");
+      return res.status(404).send("User does not exist");
     } else {
-      res.status(200).send(result.rows);
+      return res.status(200).send(result.rows);
     }
   } catch (error) {
-    res.status(500).send("error: " + error);
+    return res.status(500).send("error: " + error);
   }
 };
 
@@ -122,5 +122,38 @@ export const userLogin = async (req: Request, res: Response) => {
     }
   } catch (error) {
     return res.status(500).send("error:" + error);
+  }
+};
+
+export const userChangePassword = async (req: Request, res: Response) => {
+  try {
+    const email = req.params.email;
+    console.log("Email: " + email);
+    const result = await pool.query(
+      "select * from public.user where email=$1",
+      [email]
+    );
+    console.log(result);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "User not Found" });
+    } else {
+      const hashPassword = await createhash(req.body.password);
+      const updatePassword = await pool.query(
+        'UPDATE "user" SET password = $1 WHERE email = $2',
+        [hashPassword, email]
+      );
+      console.log("145",updatePassword);
+
+      if (updatePassword.rowCount === 1) {
+        return res
+          .status(200)
+          .json({ message: "Password updated successfully" });
+      } else {
+        return res.status(500).json({ message: "Failed to update password" });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ message: error });
   }
 };

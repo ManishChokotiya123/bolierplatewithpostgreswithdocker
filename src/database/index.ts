@@ -11,11 +11,11 @@ const pool = new Pool({
   port: 5432,
 });
 
-// pool.connect((err) => {
-//   if (err) {
-//     throw err;
-//   } else {
-//     console.log("Connected to database");
-//   }
-// });
+pool.connect((err) => {
+  if (err) {
+    throw err;
+  } else {
+    console.log("Connected to database");
+  }
+});
 export default pool;

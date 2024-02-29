@@ -6,6 +6,7 @@ import {
   userUpdate,
   userDelete,
   userLogin,
+  userChangePassword
 } from "../controller/index";
 const router = Router();
 
@@ -20,5 +21,7 @@ router.post("/user/update/:id", userUpdate);
 router.delete("/user/delete/:id", userDelete);
 
 router.post("/user/login", userLogin);
+
+router.get("/user/changePassword/:email", userChangePassword)
 
 export default router;
